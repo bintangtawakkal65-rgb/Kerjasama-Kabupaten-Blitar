@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIARSIP Tata Pemerintahan Kabupaten Blitar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7dd3fc 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f2557 0%, #1e40af 50%, #3b82f6 100%);
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-text h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-text p {
+            color: #93c5fd;
+            font-size: 14px;
+        }
+
+        .nav {
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 110px;
+            z-index: 999;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px 20px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59,130,246,0.4);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(59,130,246,0.6);
+            background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(59,130,246,0.3);
+        }
+
+        .card h2 {
+            color: #1e40af;
+            margin-bottom: 20px;
+            font-size: 26px;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+
+        .card h3 {
+            color: #2563eb;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .card p, .card ul {
+            line-height: 1.8;
+            color: #4b5563;
+            margin-bottom: 15px;
+        }
+
+        .card ul {
+            padding-left: 25px;
+        }
+
+        .card li {
+            margin-bottom: 10px;
+        }
+
+        .search-form {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #93c5fd;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1e40af;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #93c5fd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+
+        .btn-search {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59,130,246,0.4);
+        }
+
+        .btn-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59,130,246,0.6);
+        }
+
+        .result-item {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s ease;
+        }
+
+        .result-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(59,130,246,0.2);
+        }
+
+        .result-item h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .result-item p {
+            color: #4b5563;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #3b82f6;
+        }
+
+        .contact-info p {
+            margin: 10px 0;
+            color: #1e40af;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .pdf-upload {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px dashed #3b82f6;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .pdf-upload p {
+            color: #2563eb;
+            font-style: italic;
+            margin: 5px 0;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #0f2557 0%, #1e40af 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        .cooperation-type {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .cooperation-type h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header-text h1 {
+                font-size: 20px;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <img src="4b02df33-e318-48af-9985-d430c298928c-removebg-preview.png" alt="Logo Kabupaten Blitar" class="logo">
+            <div class="header-text">
+                <h1>JDIK KABUPATEN BLITAR</h1>
+                <p>Jaringan Dokumentasi Informasi Kerjasama Kabupaten Blitar - Bagian Tata Pemerintahan</p>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-content">
+            <button class="nav-btn" onclick="showSection('tentang')">Tentang</button>
+            <button class="nav-btn" onclick="showSection('panduan')">Panduan</button>
+            <button class="nav-btn" onclick="showSection('pencarian')">Pencarian Informasi</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Tentang Section -->
+        <div id="tentang" class="content-section active">
+            <div class="card">
+                <h2>Profil Tata Pemerintahan</h2>
+                <p>Tata Pemerintahan Kabupaten Blitar merupakan bagian integral dari pemerintahan daerah yang bertanggung jawab dalam pengelolaan dan koordinasi kerjasama baik dengan daerah lain, pihak ketiga, maupun lembaga internasional.</p>
+                <p>JDIK (Jaringan Dokumentasi Informasi Kerjasama) Kabupaten Blitar hadir sebagai platform digital untuk memudahkan akses informasi kerjasama dan dokumentasi perjanjian yang telah dilakukan oleh Pemerintah Kabupaten Blitar.</p>
+                <p><strong>Tugas:</strong> 
+                <ul>
+                <li>Menyiapkan perumusan kebijakan daerah;
+                <li>Mengoordinasikan perumusan kebijakan daerah;</li>
+                <li>Mengoordinasikan pelaksanaan tugas perangkat daerah;</li>
+                <li>Melaksanakan pemantauan dan evaluasi pelaksanaan kebijakan daerah; dan</li>
+                <li>Melaksanakan pembinaan administrasi, di bidang administrasi pemerintahan, kerja sama daerah, administrasi kewilayahan dan otonomi daerah. </li>
+                 <p><strong>Fungsi:</strong></p>
+                <ul>
+                    <li>Penyiapan bahan perumusan kebijakan daerah di bidang administrasi pemerintahan, administrasi kewilayahan dan otonomi daerah serta kerjasama Daerah;</li>
+                    <li>Penyiapan bahan pengoordinasian perumusan kebijakan daerah di bidang administrasi pemerintahan, administrasi kewilayahan dan otonomi daerah serta kerjasama Daerah;</li>
+                    <li>Penyiapan bahan pengoordinasian pelaksanaan tugas Sekretariat Dewan Perwakilan Rakyat Daerah, Dinas Pemberdayaan Masyarakat dan Desa dan Kecamatan serta Kelurahan;</li>
+                    <li>Penyiapan bahan pemantauan, evaluasi, dan pelaporan pelaksanaan kebijakan daerah di bidang administrasi pemerintahan, administrasi kewilayahan dan otonomi daerah serta kerjasama daerah; dan</li>
+                    <li>Pelaksanaan fungsi kedinasan lain yang diberikan Asisten Pemerintahan dan Kesejahteraan Rakyat</li>
+                </ul>
+               <h2>Struktur Organisasi Bagian Tata Pemerintahan</h2>
+                <br><img src="Struktur Organisasi.png" width="600" height="450">
+            </div>
+
+            <div class="card">
+                <h2>Kontak Kerjasama</h2>
+                <div class="contact-info">
+                    <p>📧 Email: tapem@blitarkab.go.id</p>
+                    <p>📍 Alamat: Kantor Bupati Blitar, Jl. Kusuma Bangsa No.60, Kanigoro, Kec. Kanigoro, Kabupaten Blitar, Jawa Timur 66171</p>
+                    <p>📞 Untuk informasi lebih lanjut mengenai kerjasama, silakan hubungi melalui email resmi kami.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panduan Section -->
+        <div id="panduan" class="content-section">
+            <div class="card">
+                <h2>Panduan Kerjasama</h2>
+                
+                <div class="cooperation-type">
+                    <h4>1. Kerjasama dengan Daerah Lain</h4>
+                    <p>Kerjasama yang dilakukan antara Pemerintah Kabupaten Blitar dengan pemerintah daerah lain (provinsi, kabupaten, atau kota) di seluruh Indonesia. Kerjasama ini bertujuan untuk meningkatkan pelayanan publik, pembangunan daerah, dan kesejahteraan masyarakat melalui kolaborasi antar daerah dalam berbagai bidang seperti ekonomi, sosial, budaya, infrastruktur, dan layanan publik.</p>
+                </div>
+
+                <div class="cooperation-type">
+                    <h4>2. Kerjasama dengan Pihak Ketiga</h4>
+                    <p>Kerjasama yang dilakukan dengan lembaga, organisasi, badan usaha, atau institusi dalam negeri di luar pemerintahan. Meliputi kerjasama dengan universitas, lembaga penelitian, perusahaan swasta, BUMN, organisasi masyarakat sipil, dan lembaga non-profit. Kerjasama ini dapat berupa transfer pengetahuan, pengembangan SDM, investasi, atau program pembangunan daerah.</p>
+                </div>
+
+                <div class="cooperation-type">
+                    <h4>3. Kerjasama dengan Pemerintah Luar Negeri</h4>
+                    <p>Kerjasama yang dilakukan antara Pemerintah Kabupaten Blitar dengan pemerintah negara lain atau entitas pemerintahan di tingkat regional/kota dari negara lain. Kerjasama ini biasanya difasilitasi melalui jalur diplomasi dan kementerian luar negeri, mencakup sister city, pertukaran budaya, transfer teknologi, dan program pembangunan berkelanjutan.</p>
+                </div>
+
+                <div class="cooperation-type">
+                    <h4>4. Kerjasama dengan Lembaga Luar Negeri</h4>
+                    <p>Kerjasama dengan organisasi internasional, lembaga donor internasional, NGO internasional, universitas luar negeri, atau badan usaha multinasional. Meliputi program bantuan pembangunan, capacity building, riset bersama, pertukaran akademik, dan investasi asing. Contoh: kerjasama dengan UNDP, World Bank, JICA, atau universitas luar negeri.</p>
+                </div>
+
+                <h3 style="margin-top: 30px;">Tata Cara Kerjasama Berdasarkan Peraturan Menteri Dalam Negeri</h3>
+                <div class="pdf-upload">
+                    <p>📄 Berikut adalah tata cara kerjasama berdasarkan PERMENDAGRI Nomor 22 TAHUN 2020</p>
+                    <a href="Permendagri Nomor 22 Tahun 2020 (1).pdf" target="_blank">Buka Dokumen PDF</a>
+                    <p>📄 Berikut adalah tata cara kerjasama berdasarkan PERMENDAGRI Nomor 75 TAHUN 2022</p>
+                    <a href="Permendagri Nomor 75 Tahun 2022.pdf" target="_blank">Buka Dokumen PDF</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Draf Kesepakatan Bersama</h2>
+                <p>Berikut adalah template draf Kesepakatan Bersama:</p>
+                
+                <h3>Template Draf Kesepakatan Bersama</h3>
+                <div class="pdf-upload">
+                    <p>📄 Buka file dibawah ini untuk template draf Kesepakatan Bersama</p>
+                    <a href="New Template Draf - Kesepakatan Bersama - 2025.pdf" target="_blank">Buka Dokumen PDF</a>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Pencarian Section -->
+        <div id="pencarian" class="content-section">
+            <div class="card">
+                <h2>Pencarian Informasi Kerjasama</h2>
+                
+                <!-- Kerjasama Daerah Lain -->
+                <div class="search-form">
+                    <h3>Kerjasama dengan Daerah Lain</h3>
+                    <div class="form-group">
+                        <label>Provinsi</label>
+                        <select id="provinsi">
+                            <option value="">Pilih Provinsi</option>
+                            <option value="Aceh">Aceh</option>
+                            <option value="Sumatera Utara">Sumatera Utara</option>
+                            <option value="Sumatera Barat">Sumatera Barat</option>
+                            <option value="Riau">Riau</option>
+                            <option value="Jambi">Jambi</option>
+                            <option value="Sumatera Selatan">Sumatera Selatan</option>
+                            <option value="Bengkulu">Bengkulu</option>
+                            <option value="Lampung">Lampung</option>
+                            <option value="Kepulauan Bangka Belitung">Kepulauan Bangka Belitung</option>
+                            <option value="Kepulauan Riau">Kepulauan Riau</option>
+                            <option value="DKI Jakarta">DKI Jakarta</option>
+                            <option value="Jawa Barat">Jawa Barat</option>
+                            <option value="Jawa Tengah">Jawa Tengah</option>
+                            <option value="DI Yogyakarta">DI Yogyakarta</option>
+                            <option value="Jawa Timur">Jawa Timur</option>
+                            <option value="Banten">Banten</option>
+                            <option value="Bali">Bali</option>
+                            <option value="Nusa Tenggara Barat">Nusa Tenggara Barat</option>
+                            <option value="Nusa Tenggara Timur">Nusa Tenggara Timur</option>
+                            <option value="Kalimantan Barat">Kalimantan Barat</option>
+                            <option value="Kalimantan Tengah">Kalimantan Tengah</option>
+                            <option value="Kalimantan Selatan">Kalimantan Selatan</option>
+                            <option value="Kalimantan Timur">Kalimantan Timur</option>
+                            <option value="Kalimantan Utara">Kalimantan Utara</option>
+                            <option value="Sulawesi Utara">Sulawesi Utara</option>
+                            <option value="Sulawesi Tengah">Sulawesi Tengah</option>
+                            <option value="Sulawesi Selatan">Sulawesi Selatan</option>
+                            <option value="Sulawesi Tenggara">Sulawesi Tenggara</option>
+                            <option value="Gorontalo">Gorontalo</option>
+                            <option value="Sulawesi Barat">Sulawesi Barat</option>
+                            <option value="Maluku">Maluku</option>
+                            <option value="Maluku Utara">Maluku Utara</option>
+                            <option value="Papua">Papua</option>
+                            <option value="Papua Barat">Papua Barat</option>
+                            <option value="Papua Selatan">Papua Selatan</option>
+                            <option value="Papua Tengah">Papua Tengah</option>
+                            <option value="Papua Pegunungan">Papua Pegunungan</option>
+                            <option value="Papua Barat Daya">Papua Barat Daya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Kabupaten/Kota</label>
+                        <input type="text" id="kabkota" placeholder="Masukkan nama kabupaten/kota">
+                    </div>
+                    <div class="form-group">
+                        <label>Judul Kerjasama</label>
+                        <input type="text" id="judulDaerah" placeholder="Masukkan judul kerjasama">
+                    </div>
+                    <div class="form-group">
+                        <label>Tahun Kerjasama</label>
+                        <input type="number" id="tahunDaerah" placeholder="Contoh: 2024" min="2010" max="2050">
+                    </div>
+                    <div class="form-group">
+                        <label>Masa Berlaku Kerjasama</label>
+                        <input type="text" id="masaBerlakuDaerah" placeholder="Contoh: 2024-2029">
+                    </div>
+                    <button class="btn-search" onclick="searchDaerah()">Cari</button>
+                </div>
+                <div id="resultDaerah"></div>
+
+                <!-- Kerjasama Pihak Ketiga -->
+                <div class="search-form" style="margin-top: 30px;">
+                    <h3>Kerjasama dengan Pihak Ketiga</h3>
+                    <div class="form-group">
+                        <label>Nama Lembaga</label>
+                        <input type="text" id="lembagaKetiga" placeholder="Masukkan nama lembaga">
+                    </div>
+                    <div class="form-group">
+                        <label>Judul Kerjasama</label>
+                        <input type="text" id="judulKetiga" placeholder="Masukkan judul kerjasama">
+                    </div>
+                    <div class="form-group">
+                        <label>Tahun Kerjasama</label>
+                        <input type="number" id="tahunKetiga" placeholder="Contoh: 2024" min="2010" max="2050">
+                    </div>
+                    <div class="form-group">
+                        <label>Masa Berlaku Kerjasama</label>
+                        <input type="text" id="masaBerlakuKetiga" placeholder="Contoh: 2024-2029">
+                    </div>
+                    <button class="btn-search" onclick="searchKetiga()">Cari</button>
+                </div>
+                <div id="resultKetiga"></div>
+
+                <!-- Kerjasama Pemerintah Luar Negeri -->
+                <div class="search-form" style="margin-top: 30px;">
+                    <h3>Kerjasama dengan Pemerintah Luar Negeri</h3>
+                    <div class="form-group">
+                        <label>Nama Negara</label>
+                        <input type="text" id="negara" placeholder="Masukkan nama negara">
+                    </div>
+                    <div class="form-group">
+                        <label>Judul Kerjasama</label>
+                        <input type="text" id="judulNegara" placeholder="Masukkan judul kerjasama">
+                    </div>
+                    <div class="form-group">
+                        <label>Tahun Kerjasama</label>
+                        <input type="number" id="tahunNegara" placeholder="Contoh: 2024" min="2010" max="2050">
+                    </div>
+                    <div class="form-group">
+                        <label>Masa Berlaku Kerjasama</label>
+                        <input type="text" id="masaBerlakuNegara" placeholder="Contoh: 2024-2029">
+                    </div>
+                    <button class="btn-search" onclick="searchNegara()">Cari</button>
+                </div>
+                <div id="resultNegara"></div>
+
+                <!-- Kerjasama Lembaga Luar Negeri -->
+                <div class="search-form" style="margin-top: 30px;">
+                    <h3>Kerjasama dengan Lembaga Luar Negeri</h3>
+                    <div class="form-group">
+                        <label>Nama Lembaga</label>
+                        <input type="text" id="lembagaLN" placeholder="Masukkan nama lembaga luar negeri">
+                    </div>
+                    <div class="form-group">
+                        <label>Judul Kerjasama</label>
+                        <input type="text" id="judulLN" placeholder="Masukkan judul kerjasama">
+                    </div>
+                    <div class="form-group">
+                        <label>Tahun Kerjasama</label>
+                        <input type="number" id="tahunLN" placeholder="Contoh: 2024" min="2010" max="2050">
+                    </div>
+                    <div class="form-group">
+                        <label>Masa Berlaku Kerjasama</label>
+                        <input type="text" id="masaBerlakuLN" placeholder="Contoh: 2024-2029">
+                    </div>
+                    <button class="btn-search" onclick="searchLN()">Cari</button>
+                </div>
+                <div id="resultLN"></div>
+
+                <!-- Kerjasama Rumpun Bidang -->
+                <div class="search-form" style="margin-top: 30px;">
+                    <h3>Kerjasama Rumpun Bidang Kabupaten Blitar</h3>
+                    <div class="form-group">
+                        <label>Rumpun Bidang</label>
+                        <select id="rumpunBidang">
+                            <option value="">Pilih Rumpun Bidang</option>
+                            <option value="Ketahanan Pangan">Ketahanan Pangan</option>
+                            <option value="Pertanian">Pertanian</option>
+                            <option value="Transportasi">Transportasi</option>
+                            <option value="Kesehatan">Kesehatan</option>
+                            <option value="Pendidikan">Pendidikan</option>
+                            <option value="Pariwisata">Pariwisata</option>
+                            <option value="Perdagangan">Perdagangan</option>
+                            <option value="Industri">Industri</option>
+                            <option value="Lingkungan Hidup">Lingkungan Hidup</option>
+                            <option value="Sosial">Sosial</option>
+                            <option value="Pemberdayaan Masyarakat">Pemberdayaan Masyarakat</option>
+                            <option value="Infrastruktur">Infrastruktur</option>
+                            <option value="Perikanan">Perikanan</option>
+                            <option value="Peternakan">Peternakan</option>
+                            <option value="Energi">Energi</option>
+                            <option value="Teknologi Informasi">Teknologi Informasi</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Judul Kerjasama</label>
+                        <input type="text" id="judulRumpun" placeholder="Masukkan judul kerjasama">
+                    </div>
+                    <div class="form-group">
+                        <label>Tahun Kerjasama</label>
+                        <input type="number" id="tahunRumpun" placeholder="Contoh: 2024" min="2010" max="2050">
+                    </div>
+                    <button class="btn-search" onclick="searchRumpun()">Cari</button>
+                </div>
+                <div id="resultRumpun"></div>
+
+                <!-- Pencarian Berdasarkan Tahun -->
+                <div class="search-form" style="margin-top: 30px;">
+                    <h3>Pencarian Berdasarkan Tahun Kerjasama</h3>
+                    <div class="form-group">
+                        <label>Tahun</label>
+                        <select id="tahunSearch">
+                            <option value="">Pilih Tahun</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                            <option value="2013">2013</option>
+                            <option value="2014">2014</option>
+                            <option value="2015">2015</option>
+                            <option value="2016">2016</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                            <option value="2031">2031</option>
+                            <option value="2032">2032</option>
+                            <option value="2033">2033</option>
+                            <option value="2034">2034</option>
+                            <option value="2035">2035</option>
+                            <option value="2036">2036</option>
+                            <option value="2037">2037</option>
+                            <option value="2038">2038</option>
+                            <option value="2039">2039</option>
+                            <option value="2040">2040</option>
+                            <option value="2041">2041</option>
+                            <option value="2042">2042</option>
+                            <option value="2043">2043</option>
+                            <option value="2044">2044</option>
+                            <option value="2045">2045</option>
+                            <option value="2046">2046</option>
+                            <option value="2047">2047</option>
+                            <option value="2048">2048</option>
+                            <option value="2049">2049</option>
+                            <option value="2050">2050</option>
+                        </select>
+                    </div>
+                    <button class="btn-search" onclick="searchByYear()">Cari</button>
+                </div>
+                <div id="resultYear"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 JDIK Kabupaten Blitar. All Rights Reserved.</p>
+        <p>Jaringan Dokumentasi Informasi Kerjasama - Pemerintah Kabupaten Blitar</p>
+    </footer>
+
+    <script>
+        // Data dummy untuk simulasi
+        const dataDaerah = [
+            {provinsi: "Jawa Tengah", kabkota: "Kota Semarang", judul: "Kerjasama Bidang Pariwisata", tahun: 2023, masaBerlaku: "2023-2028"},
+            {provinsi: "Jawa Timur", kabkota: "Kota Malang", judul: "Pengembangan UMKM", tahun: 2024, masaBerlaku: "2024-2027"},
+            {provinsi: "Bali", kabkota: "Kabupaten Gianyar", judul: "Pertukaran Budaya dan Seni", tahun: 2022, masaBerlaku: "2022-2025"}
+        ];
+
+        const dataKetiga = [
+            {lembaga: "Universitas Brawijaya", judul: "Penelitian dan Pengembangan Pertanian", tahun: 2023, masaBerlaku: "2023-2026"},
+            {lembaga: "PT Telkom Indonesia", judul: "Pengembangan Smart City", tahun: 2024, masaBerlaku: "2024-2029"},
+            {lembaga: "Bank Jatim", judul: "Pembiayaan UMKM", tahun: 2022, masaBerlaku: "2022-2025"}
+        ];
+
+        const dataNegara = [
+            {negara: "Jepang", judul: "Kerjasama Sister City", tahun: 2021, masaBerlaku: "2021-2026"},
+            {negara: "Australia", judul: "Pertukaran Pelajar dan Budaya", tahun: 2023, masaBerlaku: "2023-2028"}
+        ];
+
+        const dataLN = [
+            {lembaga: "JICA", judul: "Program Peningkatan Kapasitas SDM", tahun: 2023, masaBerlaku: "2023-2026"},
+            {lembaga: "World Bank", judul: "Infrastruktur Berkelanjutan", tahun: 2022, masaBerlaku: "2022-2027"},
+            {lembaga: "UNDP", judul: "Pembangunan Berkelanjutan", tahun: 2024, masaBerlaku: "2024-2029"}
+        ];
+
+        const dataRumpun = [
+            {rumpun: "Ketahanan Pangan", judul: "Program Lumbung Pangan Desa", tahun: 2023},
+            {rumpun: "Pertanian", judul: "Modernisasi Alat Pertanian", tahun: 2024},
+            {rumpun: "Transportasi", judul: "Pengembangan Transportasi Publik", tahun: 2023},
+            {rumpun: "Kesehatan", judul: "Peningkatan Layanan Kesehatan Primer", tahun: 2024},
+            {rumpun: "Pendidikan", judul: "Digitalisasi Pendidikan", tahun: 2023}
+        ];
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function searchDaerah() {
+            const provinsi = document.getElementById('provinsi').value.toLowerCase();
+            const kabkota = document.getElementById('kabkota').value.toLowerCase();
+            const judul = document.getElementById('judulDaerah').value.toLowerCase();
+            const tahun = document.getElementById('tahunDaerah').value;
+            const masaBerlaku = document.getElementById('masaBerlakuDaerah').value.toLowerCase();
+
+            const results = dataDaerah.filter(item => {
+                return (!provinsi || item.provinsi.toLowerCase().includes(provinsi)) &&
+                       (!kabkota || item.kabkota.toLowerCase().includes(kabkota)) &&
+                       (!judul || item.judul.toLowerCase().includes(judul)) &&
+                       (!tahun || item.tahun.toString() === tahun) &&
+                       (!masaBerlaku || item.masaBerlaku.toLowerCase().includes(masaBerlaku));
+            });
+
+            displayResults('resultDaerah', results, 'daerah');
+        }
+
+        function searchKetiga() {
+            const lembaga = document.getElementById('lembagaKetiga').value.toLowerCase();
+            const judul = document.getElementById('judulKetiga').value.toLowerCase();
+            const tahun = document.getElementById('tahunKetiga').value;
+            const masaBerlaku = document.getElementById('masaBerlakuKetiga').value.toLowerCase();
+
+            const results = dataKetiga.filter(item => {
+                return (!lembaga || item.lembaga.toLowerCase().includes(lembaga)) &&
+                       (!judul || item.judul.toLowerCase().includes(judul)) &&
+                       (!tahun || item.tahun.toString() === tahun) &&
+                       (!masaBerlaku || item.masaBerlaku.toLowerCase().includes(masaBerlaku));
+            });
+
+            displayResults('resultKetiga', results, 'ketiga');
+        }
+
+        function searchNegara() {
+            const negara = document.getElementById('negara').value.toLowerCase();
+            const judul = document.getElementById('judulNegara').value.toLowerCase();
+            const tahun = document.getElementById('tahunNegara').value;
+            const masaBerlaku = document.getElementById('masaBerlakuNegara').value.toLowerCase();
+
+            const results = dataNegara.filter(item => {
+                return (!negara || item.negara.toLowerCase().includes(negara)) &&
+                       (!judul || item.judul.toLowerCase().includes(judul)) &&
+                       (!tahun || item.tahun.toString() === tahun) &&
+                       (!masaBerlaku || item.masaBerlaku.toLowerCase().includes(masaBerlaku));
+            });
+
+            displayResults('resultNegara', results, 'negara');
+        }
+
+        function searchLN() {
+            const lembaga = document.getElementById('lembagaLN').value.toLowerCase();
+            const judul = document.getElementById('judulLN').value.toLowerCase();
+            const tahun = document.getElementById('tahunLN').value;
+            const masaBerlaku = document.getElementById('masaBerlakuLN').value.toLowerCase();
+
+            const results = dataLN.filter(item => {
+                return (!lembaga || item.lembaga.toLowerCase().includes(lembaga)) &&
+                       (!judul || item.judul.toLowerCase().includes(judul)) &&
+                       (!tahun || item.tahun.toString() === tahun) &&
+                       (!masaBerlaku || item.masaBerlaku.toLowerCase().includes(masaBerlaku));
+            });
+
+            displayResults('resultLN', results, 'ln');
+        }
+
+        function searchRumpun() {
+            const rumpun = document.getElementById('rumpunBidang').value.toLowerCase();
+            const judul = document.getElementById('judulRumpun').value.toLowerCase();
+            const tahun = document.getElementById('tahunRumpun').value;
+
+            const results = dataRumpun.filter(item => {
+                return (!rumpun || item.rumpun.toLowerCase().includes(rumpun)) &&
+                       (!judul || item.judul.toLowerCase().includes(judul)) &&
+                       (!tahun || item.tahun.toString() === tahun);
+            });
+
+            displayResults('resultRumpun', results, 'rumpun');
+        }
+
+        function searchByYear() {
+            const tahun = document.getElementById('tahunSearch').value;
+            
+            if (!tahun) {
+                document.getElementById('resultYear').innerHTML = '<p style="color: #ef4444; text-align: center; margin-top: 20px;">Silakan pilih tahun terlebih dahulu</p>';
+                return;
+            }
+
+            const allResults = [
+                ...dataDaerah.filter(item => item.tahun.toString() === tahun).map(item => ({...item, type: 'Daerah Lain'})),
+                ...dataKetiga.filter(item => item.tahun.toString() === tahun).map(item => ({...item, type: 'Pihak Ketiga'})),
+                ...dataNegara.filter(item => item.tahun.toString() === tahun).map(item => ({...item, type: 'Pemerintah Luar Negeri'})),
+                ...dataLN.filter(item => item.tahun.toString() === tahun).map(item => ({...item, type: 'Lembaga Luar Negeri'})),
+                ...dataRumpun.filter(item => item.tahun.toString() === tahun).map(item => ({...item, type: 'Rumpun Bidang'}))
+            ];
+
+            if (allResults.length === 0) {
+                document.getElementById('resultYear').innerHTML = '<p style="color: #ef4444; text-align: center; margin-top: 20px;">Tidak ada data kerjasama pada tahun ' + tahun + '</p>';
+                return;
+            }
+
+            let html = '<h3 style="color: #1e40af; margin: 20px 0;">Hasil Pencarian Tahun ' + tahun + ' (' + allResults.length + ' kerjasama ditemukan)</h3>';
+            
+            allResults.forEach(item => {
+                html += '<div class="result-item">';
+                html += '<h4>' + item.judul + '</h4>';
+                html += '<p><strong>Jenis Kerjasama:</strong> ' + item.type + '</p>';
+                
+                if (item.provinsi) html += '<p><strong>Provinsi:</strong> ' + item.provinsi + '</p>';
+                if (item.kabkota) html += '<p><strong>Kabupaten/Kota:</strong> ' + item.kabkota + '</p>';
+                if (item.lembaga) html += '<p><strong>Lembaga:</strong> ' + item.lembaga + '</p>';
+                if (item.negara) html += '<p><strong>Negara:</strong> ' + item.negara + '</p>';
+                if (item.rumpun) html += '<p><strong>Rumpun Bidang:</strong> ' + item.rumpun + '</p>';
+                
+                html += '<p><strong>Tahun:</strong> ' + item.tahun + '</p>';
+                if (item.masaBerlaku) html += '<p><strong>Masa Berlaku:</strong> ' + item.masaBerlaku + '</p>';
+                html += '</div>';
+            });
+
+            document.getElementById('resultYear').innerHTML = html;
+        }
+
+        function displayResults(containerId, results, type) {
+            const container = document.getElementById(containerId);
+            
+            if (results.length === 0) {
+                container.innerHTML = '<p style="color: #ef4444; text-align: center; margin-top: 20px;">Tidak ada data yang ditemukan</p>';
+                return;
+            }
+
+            let html = '<h3 style="color: #1e40af; margin: 20px 0;">Hasil Pencarian (' + results.length + ' data ditemukan)</h3>';
+            
+            results.forEach(item => {
+                html += '<div class="result-item">';
+                html += '<h4>' + item.judul + '</h4>';
+                
+                if (type === 'daerah') {
+                    html += '<p><strong>Provinsi:</strong> ' + item.provinsi + '</p>';
+                    html += '<p><strong>Kabupaten/Kota:</strong> ' + item.kabkota + '</p>';
+                } else if (type === 'ketiga' || type === 'ln') {
+                    html += '<p><strong>Lembaga:</strong> ' + item.lembaga + '</p>';
+                } else if (type === 'negara') {
+                    html += '<p><strong>Negara:</strong> ' + item.negara + '</p>';
+                } else if (type === 'rumpun') {
+                    html += '<p><strong>Rumpun Bidang:</strong> ' + item.rumpun + '</p>';
+                }
+                
+                html += '<p><strong>Tahun:</strong> ' + item.tahun + '</p>';
+                if (item.masaBerlaku) html += '<p><strong>Masa Berlaku:</strong> ' + item.masaBerlaku + '</p>';
+                html += '</div>';
+            });
+
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
